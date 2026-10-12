@@ -1,0 +1,27 @@
+# cook your dish here
+def start(self):
+    if not self.running and self.remaining == 0:
+        h = int(self.hours.get())
+        m = int(self.minutes.get())
+        s = int(self.seconds.get())
+        self.remaining = h * 3600 + m * 60 + s
+        if self.remaining <= 0:
+            return
+        self.running = True
+        self.tick()
+
+def tick(self):
+    if not self.running:
+        return
+    self.display.config(
+        text=f"{self.remaining//3600:02d}:"
+        f"{(self.remaining%3600)//60:02d}:"
+        f"{self.remaining%60:02d}"
+    )
+    if self.remaining <= 0:
+        self.running = False
+        self.root.bell()
+        messagebox.showinfo("Finished", "Time is up!")
+        return
+    self.remaining -= 1
+    self.after_id = self.root.after(1000, self.tick)
